@@ -4,411 +4,423 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fechamento Next Day - Julho 2026</title>
-  <!-- Chart.js para os Gráficos -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Fonte Google Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --bg-main: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-green: #22c55e;
+      --accent-red: #ef4444;
+      --accent-gold: #f59e0b;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     body {
-      background-color: #f4f6f9;
-      color: #333;
-      padding: 20px;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      padding: 16px;
+      padding-bottom: 40px;
     }
 
     .header {
-      background-color: #1e293b;
-      color: #fff;
-      padding: 20px;
-      border-radius: 8px;
       text-align: center;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-bottom: 24px;
+      padding: 20px 10px;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
     }
 
     .header h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    /* Grid Layout Principal */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    .header p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+
+    /* Container Principal */
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
       gap: 20px;
     }
 
     .card {
-      background: #ffffff;
-      border-radius: 8px;
+      background: var(--card-bg);
+      border-radius: 16px;
       padding: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      border: 1px solid #e2e8f0;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
     }
 
-    .card h2 {
-      font-size: 1.1rem;
-      color: #0f172a;
-      border-bottom: 2px solid #3b82f6;
-      padding-bottom: 8px;
-    }
-
-    /* KPI Cards */
-    .kpi-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .kpi-box {
-      background: #f8fafc;
-      padding: 12px;
-      border-radius: 6px;
-      text-align: center;
-      border: 1px solid #cbd5e1;
-    }
-
-    .kpi-box .title {
-      font-size: 0.7rem;
-      color: #64748b;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    .kpi-box .value {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #1e293b;
-      margin-top: 5px;
-    }
-
-    .kpi-box.danger .value {
-      color: #ef4444;
-    }
-
-    /* Indicadores Adicionais (NE, NI, 5STARS, NPCT) */
-    .extra-kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .extra-kpi-box {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 6px;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .extra-kpi-box .title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #1e40af;
-    }
-
-    .extra-kpi-box .value {
+    .card-title {
       font-size: 1.1rem;
       font-weight: 700;
-      color: #1d4ed8;
-      margin-top: 4px;
-    }
-
-    /* Tabelas */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 8px 10px;
-      text-align: left;
-      font-size: 0.85rem;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    th {
-      background-color: #f1f5f9;
-      color: #475569;
-      font-weight: 600;
-    }
-
-    /* Avaliações Positivas / Negativas */
-    .feedback-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
-
-    .feedback-box {
-      border-radius: 6px;
-      padding: 12px;
-    }
-
-    .feedback-box.positive {
-      background-color: #ecfdf5;
-      border: 1px solid #a7f3d0;
-    }
-
-    .feedback-box.positive h3 {
-      color: #065f46;
-      font-size: 0.95rem;
-      margin-bottom: 8px;
-    }
-
-    .feedback-box.negative {
-      background-color: #fef2f2;
-      border: 1px solid #fecaca;
-    }
-
-    .feedback-box.negative h3 {
-      color: #991b1b;
-      font-size: 0.95rem;
-      margin-bottom: 8px;
-    }
-
-    .feedback-box ul {
-      list-style-type: none;
+      color: var(--text-main);
+      margin-bottom: 16px;
       display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: 8px;
     }
 
-    .feedback-box li {
-      font-size: 0.8rem;
-      line-height: 1.3;
-      padding-bottom: 6px;
-      border-bottom: 1px dashed rgba(0,0,0,0.1);
+    /* Grid KPIs Topo */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 12px;
     }
 
-    .feedback-box.positive li { color: #047857; }
-    .feedback-box.negative li { color: #b91c1c; }
+    .kpi-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      padding: 14px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .kpi-card .label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .kpi-card .number {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-top: 4px;
+      color: var(--accent-blue);
+    }
+
+    .kpi-card.danger .number { color: var(--accent-red); }
+    .kpi-card.success .number { color: var(--accent-green); }
+
+    /* Ranking / Podium Five Stars */
+    .podium-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .driver-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+    }
+
+    .driver-card.top1 {
+      border-color: var(--accent-gold);
+      background: rgba(245, 158, 11, 0.05);
+    }
+
+    .rank-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      background: var(--card-border);
+      color: var(--text-main);
+      flex-shrink: 0;
+    }
+
+    .top1 .rank-badge { background: var(--accent-gold); color: #000; }
+
+    .driver-info h3 {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .driver-info p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .driver-score {
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .driver-score .score {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent-gold);
+    }
+
+    /* Tabelas Limpas */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      font-size: 0.85rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    /* Layout 2 Colunas */
+    .two-cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    /* Cartões de Avaliação */
+    .feedback-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .feedback-item {
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      position: relative;
+    }
+
+    .feedback-item.pos {
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      color: #86efac;
+    }
+
+    .feedback-item.neg {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+    }
+
+    .tag-score {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .pos .tag-score { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+    .neg .tag-score { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <h1>Fechamento Next Day - Julho 2026</h1>
+    <h1>🚀 FECHAMENTO NEXT DAY</h1>
+    <p>Resultados Operacionais • Julho 2026</p>
   </div>
 
-  <div class="dashboard-grid">
+  <div class="dashboard-container">
 
-    <!-- COLUNA 1: ENTREGAS & MOTIVOS DE DESVIO -->
+    <!-- RESUMO DE METRICAS (KPIs) -->
     <div class="card">
-      <h2>KPI Entregas</h2>
-      <div class="kpi-container">
-        <div class="kpi-box">
-          <div class="title">Programadas</div>
-          <div class="value">1.018</div>
+      <div class="card-title">📊 Visão Geral de Entregas</div>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="label">Programadas</div>
+          <div class="number">1.018</div>
         </div>
-        <div class="kpi-box">
-          <div class="title">1ª Tentativa</div>
-          <div class="value">982</div>
+        <div class="kpi-card success">
+          <div class="label">1ª Tentativa</div>
+          <div class="number">982</div>
         </div>
-        <div class="kpi-box danger">
-          <div class="title">Desvio</div>
-          <div class="value">36</div>
+        <div class="kpi-card danger">
+          <div class="label">Desvios</div>
+          <div class="number">36</div>
         </div>
-      </div>
-
-      <h2>Top 5 Desvios Motivo</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Motivo</th>
-            <th style="text-align: right;">Qtd</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Local de entrega fechado</td>
-            <td style="text-align: right;">9</td>
-          </tr>
-          <tr>
-            <td>Cliente ausente</td>
-            <td style="text-align: right;">8</td>
-          </tr>
-          <tr>
-            <td>Não Localizado</td>
-            <td style="text-align: right;">7</td>
-          </tr>
-          <tr>
-            <td>Compra Cancelada</td>
-            <td style="text-align: right;">9</td>
-          </tr>
-          <tr>
-            <td>Deseja receber em outro local</td>
-            <td style="text-align: right;">3</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h2>Indicadores de Performance</h2>
-      <div class="extra-kpi-grid">
-        <div class="extra-kpi-box">
-          <div class="title">NE</div>
-          <div class="value">99,61</div>
+        <div class="kpi-card">
+          <div class="label">Nível Serv. (NE)</div>
+          <div class="number">99,6%</div>
         </div>
-        <div class="extra-kpi-box">
-          <div class="title">NI</div>
-          <div class="value">100</div>
-        </div>
-        <div class="extra-kpi-box">
-          <div class="title">5STARS</div>
-          <div class="value">4,9</div>
-        </div>
-        <div class="extra-kpi-box">
-          <div class="title">NPCT</div>
-          <div class="value">99,93</div>
+        <div class="kpi-card">
+          <div class="label">Média 5STARS</div>
+          <div class="number" style="color: var(--accent-gold);">4,9 ★</div>
         </div>
       </div>
     </div>
 
-    <!-- COLUNA 2: ROTAS E VOLUMES -->
+    <!-- RANKING MOTORISTAS -->
     <div class="card">
-      <h2>Volume por Rota</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Rota</th>
-            <th style="text-align: right;">Qtd Volume</th>
-            <th style="text-align: right;">% Desvio</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>João Pessoa</td>
-            <td style="text-align: right;">421</td>
-            <td style="text-align: right;">5%</td>
-          </tr>
-          <tr>
-            <td>Recife Norte</td>
-            <td style="text-align: right;">290</td>
-            <td style="text-align: right;">2%</td>
-          </tr>
-          <tr>
-            <td>Recife Sul</td>
-            <td style="text-align: right;">307</td>
-            <td style="text-align: right;">3%</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="card-title">🏆 Ranking Five Stars de Julho</div>
+      <div class="podium-grid">
+        
+        <div class="driver-card top1">
+          <div class="rank-badge">🥇</div>
+          <div class="driver-info">
+            <h3>Ipenemery</h3>
+            <p>313 Entregas (50 avaliadas)</p>
+          </div>
+          <div class="driver-score">
+            <div class="score">4,96</div>
+            <p style="font-size: 0.65rem; color: var(--accent-gold);">★ ★ ★ ★ ★</p>
+          </div>
+        </div>
 
-      <div style="margin-top: 15px;">
-        <canvas id="chartDesvioRotas"></canvas>
+        <div class="driver-card">
+          <div class="rank-badge">🥈</div>
+          <div class="driver-info">
+            <h3>Cleiton</h3>
+            <p>297 Entregas (43 avaliadas)</p>
+          </div>
+          <div class="driver-score">
+            <div class="score">4,90</div>
+            <p style="font-size: 0.65rem; color: var(--accent-gold);">★ ★ ★ ★ ★</p>
+          </div>
+        </div>
+
+        <div class="driver-card">
+          <div class="rank-badge">🥉</div>
+          <div class="driver-info">
+            <h3>Fábio</h3>
+            <p>286 Entregas (26 avaliadas)</p>
+          </div>
+          <div class="driver-score">
+            <div class="score">4,76</div>
+            <p style="font-size: 0.65rem; color: var(--accent-gold);">★ ★ ★ ★ ☆</p>
+          </div>
+        </div>
+
+        <div class="driver-card">
+          <div class="rank-badge">4º</div>
+          <div class="driver-info">
+            <h3>Matheus</h3>
+            <p>94 Entregas (15 avaliadas)</p>
+          </div>
+          <div class="driver-score">
+            <div class="score">5,00</div>
+            <p style="font-size: 0.65rem; color: var(--accent-gold);">★ ★ ★ ★ ★</p>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <!-- COLUNA 3: FIVE STARS & FEEDBACKS -->
-    <div class="card">
-      <h2>Five Stars</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Motorista</th>
-            <th style="text-align: center;">Entregas</th>
-            <th style="text-align: center;">Avaliadas</th>
-            <th style="text-align: center;">Média</th>
-            <th style="text-align: center;">Pos.</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Ipenemery</td>
-            <td style="text-align: center;">313</td>
-            <td style="text-align: center;">50</td>
-            <td style="text-align: center;"><strong>4,96</strong></td>
-            <td style="text-align: center;">1º</td>
-          </tr>
-          <tr>
-            <td>Cleiton</td>
-            <td style="text-align: center;">297</td>
-            <td style="text-align: center;">43</td>
-            <td style="text-align: center;"><strong>4,90</strong></td>
-            <td style="text-align: center;">2º</td>
-          </tr>
-          <tr>
-            <td>Fábio</td>
-            <td style="text-align: center;">286</td>
-            <td style="text-align: center;">26</td>
-            <td style="text-align: center;"><strong>4,76</strong></td>
-            <td style="text-align: center;">3º</td>
-          </tr>
-          <tr>
-            <td>Matheus</td>
-            <td style="text-align: center;">94</td>
-            <td style="text-align: center;">15</td>
-            <td style="text-align: center;"><strong>5,00</strong></td>
-            <td style="text-align: center;">4º</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="two-cols">
+      <!-- MOTIVOS DE DESVIO -->
+      <div class="card">
+        <div class="card-title">⚠️ Principais Motivos de Desvio</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Motivo</th>
+              <th style="text-align: right;">Qtd</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Local de entrega fechado</td><td style="text-align: right; font-weight:700;">9</td></tr>
+            <tr><td>Compra Cancelada</td><td style="text-align: right; font-weight:700;">9</td></tr>
+            <tr><td>Cliente ausente</td><td style="text-align: right; font-weight:700;">8</td></tr>
+            <tr><td>Não Localizado</td><td style="text-align: right; font-weight:700;">7</td></tr>
+            <tr><td>Deseja receber em outro local</td><td style="text-align: right; font-weight:700;">3</td></tr>
+          </tbody>
+        </table>
+      </div>
 
-      <div class="feedback-grid">
-        <div class="feedback-box positive">
-          <h3>Avaliações Positivas</h3>
-          <ul>
-            <li>• Entrega muito bem feita com conferência do produto que foi colocado no lugar de uso. Pessoal muito atencioso e cuidadoso.</li>
-            <li>• Chegou cedo no dia agendado, os entregadores me ligaram quando o interfone não respondeu, esperaram eu chegar. Foram solícitos em carregar até o apto e perguntaram se queriam que desembalasse.</li>
-            <li>• Entrega mais rápida que eu já vi na vida e os entregadores TAMBÉM muito simpáticos, educados e prestativos.</li>
-            <li>• Muito satisfeita pela presteza do atendimento e pela atenção, me deixando informada o tempo todo. Passei muita segurança. Parabéns!</li>
-          </ul>
-        </div>
+      <!-- DESEMPENHO POR ROTA -->
+      <div class="card">
+        <div class="card-title">📍 Desempenho por Rota</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Rota</th>
+              <th style="text-align: center;">Volumes</th>
+              <th style="text-align: right;">% Desvio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>João Pessoa</td><td style="text-align: center;">421</td><td style="text-align: right; color: var(--accent-red); font-weight:700;">5%</td></tr>
+            <tr><td>Recife Sul</td><td style="text-align: center;">307</td><td style="text-align: right; color: var(--accent-blue); font-weight:700;">3%</td></tr>
+            <tr><td>Recife Norte</td><td style="text-align: center;">290</td><td style="text-align: right; color: var(--accent-green); font-weight:700;">2%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-        <div class="feedback-box negative">
-          <h3>Avaliações Negativas</h3>
-          <ul>
-            <li>• A proteção de alumínio traseira do fogão veio amassada devido a alguma pancada.</li>
-            <li>• Não entregaram no meu apartamento. Meu prédio tem elevador mas deixaram na portaria. Eu estava em casa.</li>
-            <li>• Recusaram-se a deixar a geladeira no meu andar mesmo tendo elevador. Deixaram na portaria e tive que pagar para duas pessoas subirem com ela pelo elevador.</li>
-            <li>• Péssimo serviço: o funcionário não subiu antes para observar que existia porta corta-fogo. Queria deixar no elevador de serviço alegando que não passava no social, até ser questionado.</li>
-          </ul>
+    <!-- FEEDBACKS DOS CLIENTES -->
+    <div class="two-cols">
+      
+      <div class="card">
+        <div class="card-title" style="color: var(--accent-green);">💬 O que os clientes ELOGIARAM</div>
+        <div class="feedback-container">
+          <div class="feedback-item pos">
+            <span class="tag-score">EXCELENTE ATENDIMENTO</span>
+            <p>"Entrega muito bem feita com conferência do produto que foi colocado no lugar de uso. Pessoal muito atencioso e cuidadoso."</p>
+          </div>
+          <div class="feedback-item pos">
+            <span class="tag-score">AGILIDADE E ATENÇÃO</span>
+            <p>"Chegou cedo no dia agendado. Os entregadores me ligaram, esperaram eu chegar e foram solícitos em carregar até o apto."</p>
+          </div>
+          <div class="feedback-item pos">
+            <span class="tag-score">SIMPATIA</span>
+            <p>"Entrega mais rápida que já vi na vida e os entregadores muito simpáticos, educados e prestativos."</p>
+          </div>
         </div>
       </div>
+
+      <div class="card">
+        <div class="card-title" style="color: var(--accent-red);">💡 Pontos de ATENÇÃO (Reclamações)</div>
+        <div class="feedback-container">
+          <div class="feedback-item neg">
+            <span class="tag-score">ENTREGA EM APARTAMENTO</span>
+            <p>"Recusaram-se a subir a geladeira pelo elevador até o meu andar. Deixaram na portaria e tive que pagar pessoas para subirem."</p>
+          </div>
+          <div class="feedback-item neg">
+            <span class="tag-score">CUIDADO COM A CARGA</span>
+            <p>"A proteção de alumínio traseira do fogão veio amassada devido a alguma pancada no transporte."</p>
+          </div>
+          <div class="feedback-item neg">
+            <span class="tag-score">AVALIAÇÃO DE ACESSO</span>
+            <p>"O funcionário alegou que não subiria a entrega antes de checar se passava socialmente, gerando transtorno para o cliente."</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
 
-  <script>
-    // Gráfico de Porcentagem de Desvio por Rota
-    const ctx = document.getElementById('chartDesvioRotas').getContext('2d');
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['João Pessoa', 'Recife Norte', 'Recife Sul'],
-        datasets: [{
-          label: '% de Desvio',
-          data: [5, 2, 3],
-          backgroundColor: ['#ef4444', '#3b82f6', '#3b82f6'],
-          borderRadius: 4
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              callback: function(value) { return value + "%" }
-            }
-          }
-        }
-      }
-    });
-  </script>
 </body>
 </html>
