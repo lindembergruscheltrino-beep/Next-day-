@@ -18,6 +18,7 @@
       --accent-green: #22c55e;
       --accent-red: #ef4444;
       --accent-gold: #f59e0b;
+      --accent-purple: #a855f7;
     }
 
     * {
@@ -58,7 +59,6 @@
       margin-top: 4px;
     }
 
-    /* Container Principal */
     .dashboard-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -85,10 +85,10 @@
       gap: 8px;
     }
 
-    /* Grid KPIs Topo */
+    /* Grid KPIs Principais e Adicionais */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       gap: 12px;
     }
 
@@ -108,7 +108,7 @@
     }
 
     .kpi-card .number {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 800;
       margin-top: 4px;
       color: var(--accent-blue);
@@ -116,8 +116,9 @@
 
     .kpi-card.danger .number { color: var(--accent-red); }
     .kpi-card.success .number { color: var(--accent-green); }
+    .kpi-card.purple .number { color: var(--accent-purple); }
 
-    /* Ranking / Podium Five Stars */
+    /* Ranking Five Stars */
     .podium-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -133,7 +134,6 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      position: relative;
     }
 
     .driver-card.top1 {
@@ -178,7 +178,7 @@
       color: var(--accent-gold);
     }
 
-    /* Tabelas Limpas */
+    /* Tabelas */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -199,14 +199,13 @@
       text-transform: uppercase;
     }
 
-    /* Layout 2 Colunas */
     .two-cols {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
     }
 
-    /* Cartões de Avaliação */
+    /* Feedback Cards */
     .feedback-container {
       display: flex;
       flex-direction: column;
@@ -218,7 +217,6 @@
       border-radius: 12px;
       font-size: 0.85rem;
       line-height: 1.4;
-      position: relative;
     }
 
     .feedback-item.pos {
@@ -257,7 +255,7 @@
 
     <!-- RESUMO DE METRICAS (KPIs) -->
     <div class="card">
-      <div class="card-title">📊 Visão Geral de Entregas</div>
+      <div class="card-title">📊 Visão Geral Operacional & Indicadores</div>
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="label">Programadas</div>
@@ -271,13 +269,21 @@
           <div class="label">Desvios</div>
           <div class="number">36</div>
         </div>
-        <div class="kpi-card">
-          <div class="label">Nível Serv. (NE)</div>
-          <div class="number">99,6%</div>
+        <div class="kpi-card purple">
+          <div class="label">NE</div>
+          <div class="number">99,61%</div>
+        </div>
+        <div class="kpi-card purple">
+          <div class="label">NI</div>
+          <div class="number">100%</div>
         </div>
         <div class="kpi-card">
-          <div class="label">Média 5STARS</div>
+          <div class="label">5STARS</div>
           <div class="number" style="color: var(--accent-gold);">4,9 ★</div>
+        </div>
+        <div class="kpi-card purple">
+          <div class="label">NPCT</div>
+          <div class="number">99,93%</div>
         </div>
       </div>
     </div>
@@ -339,22 +345,43 @@
     </div>
 
     <div class="two-cols">
-      <!-- MOTIVOS DE DESVIO -->
+      <!-- MOTIVOS DE DESVIO EM PORCENTAGEM -->
       <div class="card">
         <div class="card-title">⚠️ Principais Motivos de Desvio</div>
         <table>
           <thead>
             <tr>
               <th>Motivo</th>
-              <th style="text-align: right;">Qtd</th>
+              <th style="text-align: center;">Qtd</th>
+              <th style="text-align: right;">% do Total</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Local de entrega fechado</td><td style="text-align: right; font-weight:700;">9</td></tr>
-            <tr><td>Compra Cancelada</td><td style="text-align: right; font-weight:700;">9</td></tr>
-            <tr><td>Cliente ausente</td><td style="text-align: right; font-weight:700;">8</td></tr>
-            <tr><td>Não Localizado</td><td style="text-align: right; font-weight:700;">7</td></tr>
-            <tr><td>Deseja receber em outro local</td><td style="text-align: right; font-weight:700;">3</td></tr>
+            <tr>
+              <td>Local de entrega fechado</td>
+              <td style="text-align: center;">9</td>
+              <td style="text-align: right; font-weight:700; color: var(--accent-red);">25,0%</td>
+            </tr>
+            <tr>
+              <td>Compra Cancelada</td>
+              <td style="text-align: center;">9</td>
+              <td style="text-align: right; font-weight:700; color: var(--accent-red);">25,0%</td>
+            </tr>
+            <tr>
+              <td>Cliente ausente</td>
+              <td style="text-align: center;">8</td>
+              <td style="text-align: right; font-weight:700; color: var(--accent-gold);">22,2%</td>
+            </tr>
+            <tr>
+              <td>Não Localizado</td>
+              <td style="text-align: center;">7</td>
+              <td style="text-align: right; font-weight:700; color: var(--accent-gold);">19,4%</td>
+            </tr>
+            <tr>
+              <td>Deseja receber em outro local</td>
+              <td style="text-align: center;">3</td>
+              <td style="text-align: right; font-weight:700; color: var(--accent-blue);">8,3%</td>
+            </tr>
           </tbody>
         </table>
       </div>
